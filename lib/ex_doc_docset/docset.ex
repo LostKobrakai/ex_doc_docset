@@ -57,8 +57,9 @@ defmodule ExDocDocset.Formatter.DocSet do
       |> Floki.traverse_and_update(fn
         {el, attrs, children} = node ->
           case Floki.attribute(node, "id") do
-            ["functions"] -> {el, attrs, tag_functions(children)}
-            ["types"] -> {el, attrs, tag_types(children)}
+            ["types"] -> {el, attrs, tag_type(:tag, children)}
+            ["callbacks"] -> {el, attrs, tag_type(:callback, children)}
+            ["functions"] -> {el, attrs, tag_type(:function, children)}
             _ -> node
           end
 
@@ -71,45 +72,17 @@ defmodule ExDocDocset.Formatter.DocSet do
   end
 
   # Incorrectly tags macros as functions atm
-  defp tag_types(doc) do
+  defp tag_type(type, doc) when type in [:tag, :callback, :function] do
     Floki.traverse_and_update(doc, fn
       {el, attrs, children} = node ->
         cond do
-          "types-list" in Floki.attribute(node, "class") ->
-            children =
-              Enum.flat_map(children, fn
-                {_node, _, _} = function ->
-                  [<<"t:", name::binary>>] = Floki.attribute(function, "id")
-                  name = "//apple_ref/cpp/Type/#{URI.encode_www_form(name)}"
-                  link = {"a", [{"name", name}, {"class", "dashAnchor"}], []}
-                  [link, function]
-
-                text ->
-                  [text]
-              end)
-
-            {el, attrs, children}
-
-          true ->
-            node
-        end
-
-      other ->
-        other
-    end)
-  end
-
-  # Incorrectly tags macros as functions atm
-  defp tag_functions(doc) do
-    Floki.traverse_and_update(doc, fn
-      {el, attrs, children} = node ->
-        cond do
-          "functions-list" in Floki.attribute(node, "class") ->
+          "#{type}s-list" in Floki.attribute(node, "class") ->
             children =
               Enum.flat_map(children, fn
                 {_node, _, _} = function ->
                   [id] = Floki.attribute(function, "id")
-                  name = "//apple_ref/cpp/Function/#{URI.encode_www_form(id)}"
+                  encoded_name = URI.encode_www_form(name_from_id(type, id))
+                  name = "//apple_ref/cpp/#{docsetType(type)}/#{encoded_name}"
                   link = {"a", [{"name", name}, {"class", "dashAnchor"}], []}
                   [link, function]
 
@@ -127,6 +100,24 @@ defmodule ExDocDocset.Formatter.DocSet do
         other
     end)
   end
+
+  defp name_from_id(:tag, id) do
+    <<"t:", name::binary>> = id
+    name
+  end
+
+  defp name_from_id(:callback, id) do
+    <<"c:", name::binary>> = id
+    name
+  end
+
+  defp name_from_id(:function, id) do
+    id
+  end
+
+  defp docsetType(:tag), do: "Type"
+  defp docsetType(:callback), do: "Callback"
+  defp docsetType(:function), do: "Function"
 
   defp build_index(db, list) do
     {:ok, conn} = Basic.open(db)

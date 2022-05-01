@@ -46,7 +46,7 @@ The formatter will then create a docset in your `./doc` folder.
     - [x] Type
     - [x] Function
     - [ ] Macro
-    - [ ] Callback
+    - [x] Callback
     - [ ] Section
 - [ ] Check in with the `ex_doc` team on how to make enough things public for the usecase:  
 https://github.com/elixir-lang/ex_doc/issues/1548
