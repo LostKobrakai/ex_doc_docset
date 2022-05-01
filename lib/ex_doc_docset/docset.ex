@@ -153,6 +153,7 @@ defmodule ExDocDocset.Formatter.DocSet do
           :module -> "Module"
           :protocol -> "Protocol"
           :behaviour -> "Module"
+          :exception -> "Exception"
         end
 
       index_fn.(module.title, type, "#{module.id}.html#content")

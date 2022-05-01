@@ -39,22 +39,15 @@ The formatter will then create a docset in your `./doc` folder.
     - [x] Macro
     - [x] Protocol
     - [x] Callback
-    - [ ] Exception
+    - [x] Exception
     - [ ] Guide
     - [ ] Section
-    - [ ] Struct?
-    - [ ] Record?
   - [ ] table of contents
     - [x] Type
     - [x] Function
     - [ ] Macro
-    - [ ] Protocol
     - [ ] Callback
-    - [ ] Exception
-    - [ ] Guide
     - [ ] Section
-    - [ ] Struct?
-    - [ ] Record?
 - [ ] Check in with the `ex_doc` team on how to make enough things public for the usecase:  
 https://github.com/elixir-lang/ex_doc/issues/1548
 

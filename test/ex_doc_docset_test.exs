@@ -41,4 +41,18 @@ defmodule ExDocDocsetTest do
 
     SQL.close(conn)
   end
+
+  test "exception", %{dummy: dummy} do
+    {:ok, conn} = SQL.open(Path.join(dummy, "doc/dummy.docset/Contents/Resources/docSet.dsidx"))
+
+    sql = """
+    SELECT type, name, path
+    FROM searchIndex
+    WHERE type = 'Exception' and name = 'Dummy.Error';
+    """
+
+    assert {:ok, [_row], _columns} = SQL.exec(conn, sql) |> SQL.rows()
+
+    SQL.close(conn)
+  end
 end
