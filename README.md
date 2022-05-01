@@ -62,7 +62,7 @@ by adding `ex_doc_docset` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_doc_docset, github: "LostKobrakai/ex_doc_docset"}
+    {:ex_doc_docset, "~> 0.1.0"}
   ]
 end
 ```

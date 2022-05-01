@@ -1,6 +1,8 @@
 defmodule ExDocDocset.MixProject do
   use Mix.Project
 
+  @github "https://github.com/LostKobrakai/ex_doc_docset"
+
   def project do
     [
       app: :ex_doc_docset,
@@ -9,10 +11,12 @@ defmodule ExDocDocset.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       name: "ExDoc Docset",
-      source_url: "https://github.com/LostKobrakai/ex_doc_docset",
-      homepage_url: "https://github.com/LostKobrakai/ex_doc_docset",
+      source_url: @github,
+      homepage_url: @github,
+      description: description(),
+      package: package(),
       docs: [
-        extras: ["README.md"],
+        extras: ["README.md", "LICENSE.md"],
         formatters: ["html", "epub", ExDocDocset.Formatter.DocSet]
       ]
     ]
@@ -33,6 +37,18 @@ defmodule ExDocDocset.MixProject do
       {:jason, "~> 1.0"},
       {:exqlite, "~> 0.10.0"},
       {:html5ever, "~> 0.12.0"}
+    ]
+  end
+
+  defp description() do
+    "A few sentences (a paragraph) describing the project."
+  end
+
+  defp package() do
+    [
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
+      licenses: ["Apache-2.0"],
+      links: %{"GitHub" => @github}
     ]
   end
 end
