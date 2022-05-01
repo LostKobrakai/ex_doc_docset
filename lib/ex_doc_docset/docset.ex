@@ -20,8 +20,6 @@ defmodule ExDocDocset.Formatter.DocSet do
     patch_css(files_folder)
     modify_html(files_folder)
 
-    IO.inspect(config)
-
     # Build Info.plist
     info_plist = Path.join(docset, "/Contents/Info.plist")
     File.write!(info_plist, Templates.info_plist(config.project))
