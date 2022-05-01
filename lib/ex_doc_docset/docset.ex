@@ -52,8 +52,8 @@ defmodule ExDocDocset.Formatter.DocSet do
     for path <- Path.wildcard(Path.join(files_folder, "*.html")) do
       path
       |> File.read!()
-      |> Floki.parse_document!()
-      |> Floki.filter_out(".summary")
+      |> Floki.parse_document!(html_parser: Floki.HTMLParser.Html5ever)
+      |> Floki.filter_out("#summary")
       |> Floki.traverse_and_update(fn
         {el, attrs, children} = node ->
           case Floki.attribute(node, "id") do
