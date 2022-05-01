@@ -51,6 +51,8 @@ The formatter will then create a docset in your `./doc` folder.
 - [ ] Check in with the `ex_doc` team on how to make enough things public for the usecase:  
 https://github.com/elixir-lang/ex_doc/issues/1548
 - [ ] Dash uses a newer optimized index: Figure out what's that about
+- [x] Hide layout only if `navigator.userAgent.includes('Dash/')`
+  - [x] Check zeal for UA
 
 ## Installation
 

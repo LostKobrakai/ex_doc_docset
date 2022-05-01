@@ -37,13 +37,27 @@ defmodule ExDocDocset.Formatter.DocSet do
 
   # Config path not used for docsets
   defp normalize_config(config) do
-    %{config | javascript_config_path: nil}
+    %{config | javascript_config_path: nil, before_closing_body_tag: &hide_layout_js(config, &1)}
+  end
+
+  defp hide_layout_js(config, :html) do
+    """
+    <script>
+      if(navigator.userAgent.includes('Dash/') || navigator.userAgent.includes('Zeal/')) {
+        document.body.classList.add('in-app')
+      }
+    </script>
+    """ <> config.before_closing_body_tag.(:html)
+  end
+
+  defp hide_layout_js(config, type) do
+    config.before_closing_body_tag.(type)
   end
 
   defp patch_css(files_folder) do
     [file] = Path.wildcard(Path.join(files_folder, "dist/elixir-*.css"))
     css = File.read!(file)
-    css = Regex.replace(~r/(@media screen and \(max-width: ?)\d*?px\)/, css, "\\g{1}1px)")
+    # css = Regex.replace(~r/(@media screen and \(max-width: ?)\d*?px\)/, css, "\\g{1}1px)")
     css = String.replace(css, ".night-mode", ".night-mode-disabled")
     File.write!(file, [css, Templates.overwrite_css()])
   end
@@ -53,7 +67,6 @@ defmodule ExDocDocset.Formatter.DocSet do
       path
       |> File.read!()
       |> Floki.parse_document!(html_parser: Floki.HTMLParser.Html5ever)
-      |> Floki.filter_out("#summary")
       |> Floki.traverse_and_update(fn
         {el, attrs, children} = node ->
           case Floki.attribute(node, "id") do
@@ -81,10 +94,7 @@ defmodule ExDocDocset.Formatter.DocSet do
               Enum.flat_map(children, fn
                 {_node, _, _} = function ->
                   [id] = Floki.attribute(function, "id")
-                  encoded_name = URI.encode_www_form(name_from_id(type, id))
-                  name = "//apple_ref/cpp/#{docsetType(type)}/#{encoded_name}"
-                  link = {"a", [{"name", name}, {"class", "dashAnchor"}], []}
-                  [link, function]
+                  [dashAnchor(docsetType(type), name_from_id(type, id)), function]
 
                 text ->
                   [text]
@@ -99,6 +109,11 @@ defmodule ExDocDocset.Formatter.DocSet do
       other ->
         other
     end)
+  end
+
+  defp dashAnchor(type, name) do
+    name = "//apple_ref/cpp/#{type}/#{URI.encode_www_form(name)}"
+    {"a", [{"name", name}, {"class", "dashAnchor"}], []}
   end
 
   defp name_from_id(:tag, id) do
