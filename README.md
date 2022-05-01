@@ -28,7 +28,7 @@ The formatter will then create a docset in your `./doc` folder.
 
 ## TODO 
 
-- [ ] Automated tests
+- [ ] More automated tests
 - [ ] Correct types in table of contents (mark macros correctly)
 - [ ] Handle extra files
 - [ ] Check all types
@@ -38,7 +38,7 @@ The formatter will then create a docset in your `./doc` folder.
     - [x] Function
     - [x] Macro
     - [x] Protocol
-    - [ ] Callback
+    - [x] Callback
     - [ ] Exception
     - [ ] Guide
     - [ ] Section
