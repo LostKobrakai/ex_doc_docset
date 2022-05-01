@@ -17,7 +17,8 @@ defmodule ExDocDocset.Formatter.DocSet.Templates do
   defp id(%{project: project}), do: project |> String.downcase()
 
   templates = [
-    info_plist: [:name]
+    info_plist: [:name],
+    overwrite_css: []
   ]
 
   Enum.each(templates, fn {name, args} ->

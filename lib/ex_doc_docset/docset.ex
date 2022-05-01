@@ -45,7 +45,7 @@ defmodule ExDocDocset.Formatter.DocSet do
     css = File.read!(file)
     css = Regex.replace(~r/(@media screen and \(max-width: ?)\d*?px\)/, css, "\\g{1}1px)")
     css = String.replace(css, ".night-mode", ".night-mode-disabled")
-    File.write!(file, [css, File.read!("lib/overwrite.css")])
+    File.write!(file, [css, Templates.overwrite_css()])
   end
 
   defp modify_html(files_folder) do
@@ -147,11 +147,12 @@ defmodule ExDocDocset.Formatter.DocSet do
       {:ok, _, _, _} = Basic.exec(conn, sql, [name, type, path])
     end
 
-    for %ExDoc.ModuleNode{} = module <- list, module.doc != nil do
+    for %ExDoc.ModuleNode{} = module <- list do
       type =
         case module.type do
           :module -> "Module"
           :protocol -> "Protocol"
+          :behaviour -> "Module"
         end
 
       index_fn.(module.title, type, "#{module.id}.html#content")
@@ -164,14 +165,14 @@ defmodule ExDocDocset.Formatter.DocSet do
         index_fn.("#{module.title}.#{macro.id}", "Macro", "#{module.id}.html##{macro.id}")
       end
 
-      for %ExDoc.TypeNode{} = type <- module.typespecs do
-        name =
-          case type.arity do
-            0 -> Atom.to_string(type.name)
-            arity -> "#{Atom.to_string(type.name)}/#{arity}"
-          end
+      for %ExDoc.FunctionNode{type: :callback} = callback <- module.docs do
+        <<"c:", name::binary>> = id = callback.id
+        index_fn.("#{module.title}.#{name}", "Callback", "#{module.id}.html##{id}")
+      end
 
-        index_fn.("#{module.title}.#{name}", "Type", "#{module.id}.html##{type.id}")
+      for %ExDoc.TypeNode{} = type <- module.typespecs do
+        <<"t:", name::binary>> = id = type.id
+        index_fn.("#{module.title}.#{name}", "Type", "#{module.id}.html##{id}")
       end
     end
 

@@ -1,0 +1,98 @@
+pre code {
+  display: block !important
+}
+
+.night-mode-toggle,
+.display-settings {
+  display: none !important
+}
+
+#sidebar,
+.detail-link {
+  display: none !important
+}
+
+#content,
+.content {
+  position: static !important
+}
+
+.content {
+  padding-left: 0px
+}
+
+.row-offcanvas-left {
+  position: static !important
+}
+
+#content,
+.content {
+  width: 100% !important;
+}
+
+body {
+  padding: 0 0px 0px !important;
+}
+
+.to_top_link {
+  display: none !important
+}
+
+.row-offcanvas-left #content,
+.row-offcanvas-left .content {
+  padding: 0 23px 20px 7px !important;
+}
+
+.row-offcanvas-left .breadcrumbs {
+  margin: 0 -8px 10px -8px !important;
+  padding: 3px 9px 3px 9px;
+  background-color: transparent !important;
+}
+
+.sidebar,
+.sidebar-toggle {
+  display: none !important
+}
+
+.content,
+.main,
+.sidebar,
+body,
+html {
+  height: auto !important;
+}
+
+.main,
+body,
+html {
+  overflow: visible !important
+}
+
+.content-inner {
+  max-width: none !important;
+  padding: 0px 14px !important
+}
+
+.content-inner>h1:first-child {
+  margin-top: 0px !important;
+  padding-top: 5px !important
+}
+
+.content-inner .footer {
+  margin-bottom: 0px !important;
+  padding-bottom: 1em !important
+}
+
+body {
+  -webkit-font-feature-settings: "liga"0;
+  font-feature-settings: "liga"0;
+  -webkit-font-variant-ligatures: no-common-ligatures;
+}
+
+.content-inner .section-heading a.hover-link {
+  display: none !important
+}
+
+.content-inner .detail h2.section-heading {
+  margin-left: 0px !important
+}
