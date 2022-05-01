@@ -1,6 +1,6 @@
 # ExDocDocset
 
-Bundles `ExDoc` documentation into a docset.
+Bundles `:ex_doc` documentation into a docset.
 
 Docsets can be loaded into [Dash](https://kapeli.com/dash)(Mac OS) or
 [Zeal](https://zealdocs.org/)(Win/Linux). Not yet tested with Zeal though.

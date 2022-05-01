@@ -7,7 +7,14 @@ defmodule ExDocDocset.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      name: "ExDoc Docset",
+      source_url: "https://github.com/LostKobrakai/ex_doc_docset",
+      homepage_url: "https://github.com/LostKobrakai/ex_doc_docset",
+      docs: [
+        extras: ["README.md"],
+        formatters: ["html", "epub", ExDocDocset.Formatter.DocSet]
+      ]
     ]
   end
 
